@@ -6,6 +6,7 @@ if (!isset($_REQUEST['submit'])) {
 <input type="radio" name="radio" value="Red"> Red<br>
 <input type="radio" name="radio" value="Green"> Green<br>
 <input type="radio" name="radio" value="Blue"> Blue<br>
+<input type="radio" name="radio" value="Pink"> Pink<br>
 <input type="radio" name="radio" value="Zwart"> Black<br>
 <input type="submit"
 name="submit"
