@@ -30,7 +30,7 @@
 ?>
 <br />
 <br />
-<form action="QandA.php" method="post" name="form">
+<form action="index.php" method="post" name="form" action="">
   <label><input type="radio" name="answer" value="yes"> Yes</label><br />
   <label><input type="radio" name="answer" value="no"> No</label><br />
   <input name="question" type="hidden" value="<?php echo $question + 1; ?>">
