@@ -28,20 +28,6 @@
 	
 	echo $questions[$question];
 ?>
-<<<<<<< HEAD
-<form method=get>
-<p>Which option isn't a color?</p>
-<input type="radio" name="radio" value="Red"> Red<br>
-<input type="radio" name="radio" value="Green"> Green<br>
-<input type="radio" name="radio" value="Blue"> Blue<br>
-<input type="radio" name="radio" value="Pink"> Pink<br>
-<input type="radio" name="radio" value="Zwart"> Black<br>
-<input type="submit"
-name="submit"
-value="submit">
-=======
-<br />
-<br />
 <form action="index.php" method="post" name="form" action="">
   <label><input type="radio" name="answer" value="yes"> Yes</label><br />
   <label><input type="radio" name="answer" value="no"> No</label><br />
