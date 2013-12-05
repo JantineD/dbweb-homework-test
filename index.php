@@ -18,6 +18,11 @@
 		
 		if($_POST['answer'] == '1'){
 			echo "The answer was correct!<br /><br />";
+			if(isset($_COOKIE['correctanwers'])) {
+				setcookie('correctanwers', $_COOKIE['correctanwers'] + 1, time()+604800); 
+			}else{
+				setcookie('correctanwers', 1, time()+604800); 
+			}
 		}else{
 			echo "False answer...<br /><br />";
 		}
@@ -25,7 +30,11 @@
 	}
 	
 	if($question == mysql_num_rows(mysql_query("SELECT * FROM question")) + 1){ 
+		echo 'There are no further questions<br />';
+		echo 'You have answered : ' . $_COOKIE['correctanwers'] . ' of ' . ($question - 1) . ' correctly.';
+		
 		setcookie('question', '1', time());	
+		setcookie('correctanwers', '0', time());	
 		exit();	
 	}
 ?>
@@ -45,13 +54,5 @@
 		}
 	?>
   <input name="question" type="hidden" value="<?php echo $question; ?>">
-  <?php 
-		if($question == mysql_num_rows(mysql_query("SELECT * FROM question")) + 1){ 
-			echo 'There are no further questions';			
-		}else{
-	?>
   <input type="submit" name="submit" value="submit">
-  <?php
-		}
-	?>
 </form>
