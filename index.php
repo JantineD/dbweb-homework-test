@@ -1,40 +1,53 @@
 <?php
-
-	$questions = array(
-		"Is red a color?", 
-		"Is Green a color?", 
-		"Is Blue a color?", 
-		"Is Black a color?"
-	);
+	ob_start();
 	
-	$answers = array(
-		"yes",
-		"yes",
-		"yes",
-		"no"
-	);
+	include 'config.php';
+	error_reporting(-1);
+	ini_set("display_errors", 1);
 	
-	// controleer of er evenveel antwoorden als vragen zijn
-	if(count($answers) != count($questions)){
-		echo 'Answer and question count is not the same';
-		exit();
-	}
-	
-	if($_POST['question'] > 0){
-		$question = $_POST['question'];
+	if(isset($_COOKIE['question']) && $_COOKIE['question'] > 0){
+		$question = $_COOKIE['question'] + 1;
 	}else{
-		$question = 0;
+		$question = 1; // default start question
+		setcookie('question', $question, time()+604800);
 	}
 	
-	echo $questions[$question];
+	if(isset($_POST['submit'])){
+		
+		setcookie('question', $question, time()+604800);
+		
+		if($_POST['answer'] == '1'){
+			echo "The answer was correct!<br /><br />";
+		}else{
+			echo "False answer...<br /><br />";
+		}
+				
+	}
+	
+	if($question == mysql_num_rows(mysql_query("SELECT * FROM question")) + 1){ 
+		setcookie('question', '1', time());	
+		exit();	
+	}
 ?>
 <form action="index.php" method="post" name="form" action="">
-  <label><input type="radio" name="answer" value="yes"> Yes</label><br />
-  <label><input type="radio" name="answer" value="no"> No</label><br />
-  <input name="question" type="hidden" value="<?php echo $question + 1; ?>">
+	<?php
+	
+		echo mysql_result(mysql_query("SELECT Q_TEXT FROM question WHERE Q_NUMBER = '".$question."' LIMIT 1"), 0);
+		echo '<br /><br />';
+		
+		$dbres = mysql_query("SELECT * FROM choice WHERE Q_NUMBER = '".$question."'");
+		if(!$dbres){
+			echo 'Could not run query: ' . mysql_error();
+			exit;
+		}
+		while($row = mysql_fetch_assoc($dbres)){
+			echo '<label><input type="radio" name="answer" value="'.$row['CORRECT'].'"> '.$row['C_TEXT'].'</label><br />';
+		}
+	?>
+  <input name="question" type="hidden" value="<?php echo $question; ?>">
   <?php 
-		if(count($questions) == $question){ 
-			echo 'There are no further questions';
+		if($question == mysql_num_rows(mysql_query("SELECT * FROM question")) + 1){ 
+			echo 'There are no further questions';			
 		}else{
 	?>
   <input type="submit" name="submit" value="submit">
@@ -42,14 +55,3 @@
 		}
 	?>
 </form>
-<?php
-	if(isset($_REQUEST['submit'])){
-		
-		if($_POST['answer'] == $answers[$question - 1]){
-			echo "<br /><br />The answer was correct!";
-		}else{
-			echo "<br /><br />False answer you dumb &^%#!";
-		}
-				
-	}
-?>
