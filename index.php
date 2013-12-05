@@ -41,7 +41,6 @@
   <?php
 		}
 	?>
->>>>>>> multi
 </form>
 <?php
 	if(isset($_REQUEST['submit'])){
