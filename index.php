@@ -31,8 +31,13 @@
 	
 	if($question == mysql_num_rows(mysql_query("SELECT * FROM question")) + 1){ 
 		echo 'There are no further questions<br />';
-		echo 'You have answered : ' . $_COOKIE['correctanwers'] . ' of ' . ($question - 1) . ' correctly.';
-		
+		echo 'You have answered : ';
+		if(isset($_COOKIE['correctanwers'])) {
+			echo ($_COOKIE['correctanwers']);
+		} else {
+			echo '0';
+		}
+		echo ' of ' . ($question - 1) . ' correctly.';
 		setcookie('question', '1', time());	
 		setcookie('correctanwers', '0', time());	
 		exit();	
