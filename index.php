@@ -1,27 +1,44 @@
 <?php
 	ob_start();
+	// start session
+	session_start();
 	
 	include 'config.php';
 	error_reporting(-1);
 	ini_set("display_errors", 1);
 	
-	if(isset($_COOKIE['question']) && $_COOKIE['question'] > 0){
-		$question = $_COOKIE['question'] + 1;
+	//set cookie
+	if(isset($_COOKIE['time'])) {
+		$_SESSION['question'] = $_COOKIE['time'];
+		$question = $_SESSION['question'];
+	} else {
+		setcookie("time", 1, time() + 604800);
+		$_COOKIE['time'] = 1;
+	}
+	//Check if session is set
+	if(isset($_SESSION['question']) && $_SESSION['question'] > 0){
+		//$question = $_SESSION['question'] + 1;
+		$cookje = $_COOKIE['time'] + 1;
+		$question++;
+		echo $question;
 	}else{
 		$question = 1; // default start question
-		setcookie('question', $question, time()+604800);
+		//setcookie('question', $question, time()+604800);
+		$_SESSION['question'] = $question - 1;
 	}
 	
 	if(isset($_POST['submit'])){
 		
-		setcookie('question', $question, time()+604800);
+		setcookie('time', $cookje, time()+604800);
 		
 		if($_POST['answer'] == '1'){
 			echo "The answer was correct!<br /><br />";
-			if(isset($_COOKIE['correctanwers'])) {
-				setcookie('correctanwers', $_COOKIE['correctanwers'] + 1, time()+604800); 
+			if(isset($_SESSION['correctanwers'])) {
+				$_SESSION['correctanwers']++; 
+				$question = $_SESSION['question'] + 1;
+				
 			}else{
-				setcookie('correctanwers', 1, time()+604800); 
+				$_SESSION['correctanwers'] = 1; 
 			}
 		}else{
 			echo "False answer...<br /><br />";
@@ -29,17 +46,29 @@
 				
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	if($question == mysql_num_rows(mysql_query("SELECT * FROM question")) + 1){ 
 		echo 'There are no further questions<br />';
 		echo 'You have answered : ';
-		if(isset($_COOKIE['correctanwers'])) {
-			echo ($_COOKIE['correctanwers']);
+		if(isset($_SESSION['correctanwers'])) {
+			echo ($_SESSION['correctanwers']);
 		} else {
 			echo '0';
 		}
 		echo ' of ' . ($question - 1) . ' correctly.';
-		setcookie('question', '1', time());	
-		setcookie('correctanwers', '0', time());	
+		setcookie('time', '1', time());	
+		$_SESSION['question'] = 1;
+		$_SESSION['correctanwers'] = 0;
 		exit();	
 	}
 ?>
