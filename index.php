@@ -20,7 +20,7 @@
 		//$question = $_SESSION['question'] + 1;
 		$cookje = $_COOKIE['time'] + 1;
 		$question++;
-		echo $question;
+		//echo $question;
 	}else{
 		$question = 1; // default start question
 		//setcookie('question', $question, time()+604800);
