@@ -1,63 +1,31 @@
-<?php
-	ob_start();
-	
-	include 'config.php';
-	error_reporting(-1);
-	ini_set("display_errors", 1);
-	
-	if(isset($_COOKIE['question']) && $_COOKIE['question'] > 0){
-		$question = $_COOKIE['question'] + 1;
-	}else{
-		$question = 1; // default start question
-		setcookie('question', $question, time()+604800);
-	}
-	
-	if(isset($_POST['submit'])){
-		
-		setcookie('question', $question, time()+604800);
-		
-		if($_POST['answer'] == '1'){
-			echo "The answer was correct!<br /><br />";
-			if(isset($_COOKIE['correctanwers'])) {
-				setcookie('correctanwers', $_COOKIE['correctanwers'] + 1, time()+604800); 
-			}else{
-				setcookie('correctanwers', 1, time()+604800); 
-			}
-		}else{
-			echo "False answer...<br /><br />";
-		}
-				
-	}
-	
-	if($question == mysql_num_rows(mysql_query("SELECT * FROM question")) + 1){ 
-		echo 'There are no further questions<br />';
-		echo 'You have answered : ';
-		if(isset($_COOKIE['correctanwers'])) {
-			echo ($_COOKIE['correctanwers']);
-		} else {
-			echo '0';
-		}
-		echo ' of ' . ($question - 1) . ' correctly.';
-		setcookie('question', '1', time());	
-		setcookie('correctanwers', '0', time());	
-		exit();	
-	}
-?>
-<form action="index.php" method="post" name="form" action="">
-	<?php
-	
-		echo mysql_result(mysql_query("SELECT Q_TEXT FROM question WHERE Q_NUMBER = '".$question."' LIMIT 1"), 0);
-		echo '<br /><br />';
-		
-		$dbres = mysql_query("SELECT * FROM choice WHERE Q_NUMBER = '".$question."'");
-		if(!$dbres){
-			echo 'Could not run query: ' . mysql_error();
-			exit;
-		}
-		while($row = mysql_fetch_assoc($dbres)){
-			echo '<label><input type="radio" name="answer" value="'.$row['CORRECT'].'"> '.$row['C_TEXT'].'</label><br />';
-		}
-	?>
-  <input name="question" type="hidden" value="<?php echo $question; ?>">
-  <input type="submit" name="submit" value="submit">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Test</title>
+</head>
+<body>
+<form name="login" method="post" action="checklogin.php">
+  <center>
+    <p>Login</p>
+  </center>
+  <table border="0" cellspacing="0" cellpadding="3" align="center">
+    <tr>
+      <td>Username: </td>
+      <td><label for="username"></label>
+        <input type="text" name="myusername" id="myusername" /></td>
+    </tr>
+    <tr>
+      <td>Password: </td>
+      <td><input type="password" name="mypassword" id="mypassword" /></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="right"><input type="submit" name="Submit" id="submit" value="Login" /></td>
+    </tr>
+  </table>
 </form>
+<center>
+  <p>Or <a href="register.php">register</a></p>
+</center>
+</body>
+</html>
