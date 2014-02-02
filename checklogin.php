@@ -10,12 +10,11 @@ $myusername = mysql_real_escape_string($myusername);
 $mypassword = mysql_real_escape_string($mypassword);
 $sql="SELECT * FROM users WHERE username='$myusername' and password='$mypassword'";
 $result=mysql_query($sql);
-
 $count=mysql_num_rows($result);
 if($count==1){
 
-setcookie('username', $row['username'], time() + 604800);
-setcookie('pass', $row['password'], time() + 604800);
+setcookie('myusername', $row['username'], time() + 604800);
+setcookie('mypassword', $row['password'], time() + 604800);
 header("location:login_success.php");
 }
 

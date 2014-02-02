@@ -11,3 +11,11 @@ CREATE TABLE IF NOT EXISTS `question` (
   `Q_TEXT` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   UNIQUE KEY `Q_NUMBER` (`Q_NUMBER`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+
